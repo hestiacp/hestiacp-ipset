@@ -1,0 +1,16 @@
+#!/bin/bash
+
+if [ "$1" == "" ]; then
+        echo "[ ! ] Error. You must provide the url to fetch the ip ranges"
+        echo "      Example 1: $0 https://big.company.tld/iplist.html"
+        echo "      Example 2: $0 https://another.company.tld/iplist.json"
+        exit 1
+fi
+url="$1"
+
+# esta función sin grep funciona. Es más lenta pero es más versátil. De hecho funciona para sacar rangos de cualquier URL
+for valor in $(wget -q -O - $url)
+do
+        echo $valor | grep -o '[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}/[0-9]\{1,2\}'
+        #también funciona: echo $valor | grep -o '[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}/[1-3][0-9]'
+done
